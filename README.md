@@ -1,4 +1,4 @@
-# Minimal WooCommerce Germanmized
+# Minimal WooCommerce Germanized
 
 This is a minial testing environment for WordPress + WooCommerce + WooCommerce Germanized.
 
