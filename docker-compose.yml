@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+   woocommerce-container:
+     container_name: soap_woocommerce_container
+     build:
+      context: .
+     ports:
+       - 80:80
+     restart: always
+     volumes:
+       - ./html/:/var/www/html
+     environment:
+       WORDPRESS_DB_HOST: soap_woocommerce_db:3306
+       WORDPRESS_DB_NAME: soap_woocommerce
+       WORDPRESS_DB_USER: wcsoap
+       WORDPRESS_DB_PASSWORD: wcsoap
+       WORDPRESS_DEBUG: 1
+
+   woocommerce-cli:
+     container_name: soap_woocommerce_cli
+     image: wordpress:cli
+     restart: always
+     command: /usr/local/bin/start-script.sh
+     volumes:
+       - ./html/:/var/www/html
+       - ./start-script.sh:/usr/local/bin/start-script.sh
+     environment:
+       WORDPRESS_DB_HOST: soap_woocommerce_db:3306
+       WORDPRESS_DB_NAME: soap_woocommerce
+       WORDPRESS_DB_USER: wcsoap
+       WORDPRESS_DB_PASSWORD: wcsoap
+       WORDPRESS_DEBUG: 1
+
+   woocommerce-db:
+     image: mysql:8.0
+     command: --default-authentication-plugin=mysql_native_password
+     container_name: soap_woocommerce_db
+     volumes:
+       - ./db/:/var/lib/mysql
+     restart: always
+     environment:
+       MYSQL_DATABASE: soap_woocommerce
+       MYSQL_ROOT_PASSWORD: wcsoap
+       MYSQL_USER: wcsoap
+       MYSQL_PASSWORD: wcsoap
